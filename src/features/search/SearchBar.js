@@ -1,7 +1,7 @@
 import React from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { addValue } from './searchSlice'
-import { fetchArtists } from '../artists/artistsSlice'
+import { fetchArtists, clearArtists } from '../slices/graphSlice'
 
 export function SearchBar() {
   const state = useSelector(state => state.search.value)
@@ -13,6 +13,7 @@ export function SearchBar() {
 
   const handleKeyDown = (event) => {
     if(event.keyCode === 13) {
+      // dispatch(clearArtists())
       dispatch(fetchArtists(event.target.value))
     }
   }
