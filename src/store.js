@@ -1,12 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 
-import artistReducer from './features/artists/artistsSlice'
+import graphReducer from './features/slices/graphSlice'
 import searchReducer from './features/search/searchSlice'
 
 
 export default configureStore({
   reducer: {
-    artist: artistReducer,
+    graph: graphReducer,
     search: searchReducer,
   }
 })
