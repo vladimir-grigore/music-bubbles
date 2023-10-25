@@ -13,14 +13,14 @@ export function SearchBar() {
 
   const handleKeyDown = (event) => {
     if(event.keyCode === 13) {
-      // dispatch(clearArtists())
+      dispatch(clearArtists())
       dispatch(fetchArtists(event.target.value))
     }
   }
 
   return (
     <>
-      <input value={state} onKeyDown={handleKeyDown} onChange={handleInputChange} />
+      <input id="searchBar" value={state} onKeyDown={handleKeyDown} onChange={handleInputChange} />
     </>
   )
 }
