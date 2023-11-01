@@ -1,60 +1,78 @@
 import React from "react"
 import Graph from "react-graph-vis"
+import { v4 as uuidv4 } from "uuid"
 
-import { useSelector, useDispatch } from "react-redux"
+import { 
+  useSelector, 
+  useDispatch,
+} from "react-redux"
+
+import {
+  expandAlbums, 
+  collapseAlbums, 
+  expandTracks, 
+  collapseTracks } from "../slices/graphSlice"
+
+import { isArtistClick, isAlbumClick, findArtist, findAlbum } from "../supportingFunctions"
+
+import { fetchAlbums, fetchTracks } from "../thunks"
 
 export function Visualizer() {
-  const nodes = useSelector(state => state.graph.nodes)
-  const edges = useSelector(state => state.graph.edges)
-  const graphKey = useSelector(state => state.graph.key)
+  const stateNodes = useSelector(state => state.graph.nodes)
+  const stateEdges = useSelector(state => state.graph.edges)
+  const options = useSelector(state => state.graph.options)
+
+  const dispatch = useDispatch()
   
   let data = {
-    nodes: nodes,
-    edges: edges,
+    nodes: stateNodes,
+    edges: stateEdges,
   }
 
-  const options = {
-    nodes: {
-      shape: 'circularImage',
-      borderWidth: 3,
-      size: 45,
-      shadow:{
-        enabled: true,
-        color: 'rgba(0,0,0,0.5)',
-        size:5,
-        x:4,
-        y:4
-      },
-      font: {size: 12, color: 'gray', face: 'arial'},
-    },
-    edges: {
-      color: { inherit: true },
-      smooth: {
-        enabled: true,
-        type: 'curvedCCW',
-        roundness: .05,
-      }
+  function handleArtistClick(id) {
+    let artist = findArtist(id, stateNodes)
+    
+    if (artist["toggled"]) {
+      dispatch(collapseAlbums(id))
+    } else {          
+      dispatch(expandAlbums(id))
+      dispatch(fetchAlbums(id))
+    }
+  }
+
+  function handleAlbumClick(id) {
+    let album = findAlbum(id, stateNodes)
+
+    if (album["toggled"]) {
+      dispatch(collapseTracks(id))
+    } else {          
+      dispatch(expandTracks(id))
+      dispatch(fetchTracks(id))
     }
   }
 
   const events = {
     select: function(event) {
-      var { nodes, edges } = event;
-      console.log("nodes: ", nodes)
-      console.log("edges: ", edges)
+      var { nodes } = event
+      if (nodes[0] !== null && nodes[0] !== undefined) {
+        if (isArtistClick(nodes[0], stateNodes)) {
+          handleArtistClick(nodes[0])
+        }
+
+        if (isAlbumClick(nodes[0], stateNodes)) {
+          handleAlbumClick(nodes[0])
+        }
+      }
     }
-  };
+  }
 
   return (
     <Graph
       graph={data}
-      key={graphKey}
+      key={uuidv4}
       options={options}
       events={events}
-      style={{ 'height': '1000px' }}
-      getNetwork={network => {
-        //  if you want access to vis.js network api you can set the state in a parent component using this property
-      }}
+      style={{ "height": "1000px" }}
     />
-  );
+  )
 }

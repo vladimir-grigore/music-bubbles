@@ -1,8 +1,7 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { configureStore } from "@reduxjs/toolkit"
 
-import graphReducer from './features/slices/graphSlice'
-import searchReducer from './features/search/searchSlice'
-
+import graphReducer from "./features/slices/graphSlice"
+import searchReducer from "./features/slices/searchSlice"
 
 export default configureStore({
   reducer: {

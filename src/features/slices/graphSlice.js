@@ -1,64 +1,115 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { v4 as uuidv4 } from 'uuid'
+import { createSlice } from "@reduxjs/toolkit"
+import initialState from "../initialState"
+
+import { 
+  findArtist, 
+  findAlbum,
+  createArtistNode,
+  createAlbumNode,
+  createTrackNode,
+  discardTracks,
+  createAlbumEdges,
+  createTrackEdges
+ } from "../supportingFunctions"
+
+import { fetchArtists, fetchAlbums, fetchTracks } from "../thunks"
 
 export const graphSlice = createSlice({
-  name: 'graph',
-  initialState: {
-    nodes: [
-      {
-        group: "artist",
-        id: "0LcJLqbBmaGUft1e9Mm8HV",
-        image: "https://i.scdn.co/image/ab6761610000e5eb6c6380e782ed89db8754cf2a",
-        label: "ABBA"
-      }
-    ],
-    edges: [],
-    key: uuidv4(),
-  },
+  name: "graph",
+  initialState: initialState,
   reducers: {
     clearArtists: state => {
       state.nodes = []
     },
-    keepArtist: (state, action) => {
-      state.nodes = [action.payload]
-    }
+    expandAlbums: (state, action) => {
+      let artist_id = action.payload
+      let artist = findArtist(artist_id, state.nodes)
+      
+      artist["toggled"] = true
+
+      state.nodes = [artist]
+    },
+    collapseAlbums: (state, action) => {
+      let artist_id = action.payload
+      let artist = findArtist(artist_id, state.nodes)
+
+      artist["toggled"] = false
+
+      state.nodes = [artist]
+    },
+    expandTracks: (state, action) => {
+      let album_id = action.payload
+      let album = findAlbum(album_id, state.nodes)
+      
+      album["toggled"] = true
+
+      state.nodes[state.nodes.indexOf(album)] = album
+    },
+    collapseTracks: (state, action) => {
+      let album_id = action.payload
+      let album = findAlbum(album_id, state.nodes)
+
+      album["toggled"] = false
+
+      state.nodes[state.nodes.indexOf(album)] = album
+
+      let nodes = discardTracks(state.nodes, state.edges, album_id)
+      state.nodes = nodes
+    },
   },
   extraReducers(builder) {
     builder
       .addCase(fetchArtists.fulfilled, (state, action) => {
-        console.log("fulfilled: ", action.payload)
-        
         let artistsNodes = action.payload.map(artist => {
           return createArtistNode(artist)
         })
 
         state.nodes = artistsNodes
-        state.key = uuidv4()
       })
       .addCase(fetchArtists.rejected, (state, action) => {
+        state.error = action.payload
+      })
+      .addCase(fetchAlbums.fulfilled, (state, action) => {
+        let albums = action.payload.albums
+        let artist_id = action.payload.artist_id
+        let albumNodes = albums.map(album => {
+          return createAlbumNode(album)
+        })
+        let edgeNodes = createAlbumEdges(artist_id, albums)
+
+        state.edges = state.edges.concat(...edgeNodes)
+        state.nodes = state.nodes.concat(...albumNodes)
+      })
+      .addCase(fetchAlbums.rejected, (state, action) => {
+        state.error = action.payload
+      })
+      .addCase(fetchTracks.fulfilled, (state, action) => {
+        let tracks = action.payload.tracks
+        let album_id = action.payload.album_id
+        let trackNodes = tracks.map(album => {
+          return createTrackNode(album)
+        })
+        let edgeNodes = createTrackEdges(album_id, tracks)
+
+        state.edges = state.edges.concat(...edgeNodes)
+        state.nodes = state.nodes.concat(...trackNodes)
+      })
+      .addCase(fetchTracks.rejected, (state, action) => {
         state.error = action.payload
       })
   } 
 })
 
-// Async call to get all artists
-export const fetchArtists = createAsyncThunk('search/addArtists', async (artist) => {
-  const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/artists/${artist}`)
-  const artists = await response.json();
-  
-  return artists
-})
-
-function createArtistNode(artist) {
-  return {
-    id: artist.id, 
-    group: 'artist',
-    label: artist.name, 
-    image: artist.images.length > 0 ? artist.images[artist.images.length - 1].url : "/MissingCover.png",
-  }
-}
-
 // Action creators are generated for each case reducer function
-export const { clearArtists, keepArtist } = graphSlice.actions
+export const { 
+  clearArtists, 
+  toggleAlbums, 
+  clearTracks, 
+  toggleTracks, 
+  expandAlbums, 
+  collapseAlbums, 
+  expandTracks, 
+  collapseTracks 
+} = graphSlice.actions
 
 export default graphSlice.reducer
