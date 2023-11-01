@@ -1,7 +1,7 @@
-import './App.css';
+import "./App.css"
 
-import { SearchBar } from './features/search/SearchBar';
-import { Visualizer } from './features/components/Visualizer'
+import { Visualizer } from "./features/components/Visualizer"
+import { SearchBar } from "./features/components/SearchBar"
 
 function App() {
   return (
@@ -16,4 +16,4 @@ function App() {
   );
 }
 
-export default App;
+export default App

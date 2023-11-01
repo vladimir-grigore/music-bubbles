@@ -1,9 +1,9 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from "@reduxjs/toolkit"
 
 export const searchSlice = createSlice({
-  name: 'serarch',
+  name: "serarch",
   initialState: {
-    value: ''
+    value: ""
   },
   reducers: {
     addValue: (state, action) => {

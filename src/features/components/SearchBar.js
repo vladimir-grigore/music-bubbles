@@ -1,7 +1,8 @@
 import React from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { addValue } from './searchSlice'
-import { fetchArtists, clearArtists } from '../slices/graphSlice'
+import { addValue } from "../slices/searchSlice"
+import { clearArtists } from "../slices/graphSlice"
+import { fetchArtists } from "../thunks"
 
 export function SearchBar() {
   const state = useSelector(state => state.search.value)

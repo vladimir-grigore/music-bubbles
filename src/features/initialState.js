@@ -3,29 +3,28 @@ const initialState = {
   edges: [],
   options: {
     nodes: {
-      shape: 'circularImage',
+      shape: "circularImage",
       borderWidth: 3,
       size: 25,
       mass: 2,
       shadow:{
         enabled: true,
-        color: 'rgba(0,0,0,0.5)',
+        color: "rgba(0,0,0,0.5)",
         size:5,
         x:4,
         y:4
       },
-      font: '16px arial white',
+      font: "16px arial white",
     },
     edges: {
       color: { inherit: true },
       smooth: {
         enabled: true,
-        type: 'curvedCCW',
+        type: "curvedCCW",
         roundness: .05,
       }
     },
     physics: {
-      repulsion: 2,
       maxVelocity: 25,
       minVelocity: .5,
     },
