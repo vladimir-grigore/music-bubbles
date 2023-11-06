@@ -5,7 +5,7 @@ const initialState = {
     nodes: {
       shape: "circularImage",
       borderWidth: 3,
-      size: 25,
+      size: 30,
       mass: 2,
       shadow:{
         enabled: true,
@@ -18,6 +18,11 @@ const initialState = {
     },
     edges: {
       color: { inherit: true },
+      arrows: {
+        to: {
+          enabled: false
+        }
+      },
       smooth: {
         enabled: true,
         type: "curvedCCW",

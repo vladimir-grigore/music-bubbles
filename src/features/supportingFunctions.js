@@ -1,22 +1,22 @@
 /////////  Click handlers  ////////////
 export function isArtistClick(id, nodes) {
   let selectedNode = nodes.filter(node => { return node.id === id})
-  return selectedNode[0].group === 'artist'
+  return selectedNode[0].group === "artist"
 }
 
 export function isAlbumClick(id, nodes) {
   let selectedNode = nodes.filter(node => { return node.id === id})
-  return selectedNode[0].group === 'album'
+  return selectedNode[0].group === "album"
 }
 ///////////////////////////////////////
 
 ///////  Query functions  ////////
 export function findArtist(id, nodes) {
-  return nodes.find(node => node.id === id && node.group === 'artist')
+  return nodes.find(node => node.id === id && node.group === "artist")
 }
 
 export function findAlbum(id, nodes) {
-  return nodes.find(node => node.id === id && node.group === 'album')
+  return nodes.find(node => node.id === id && node.group === "album")
 }
 ///////////////////////////////////
 
