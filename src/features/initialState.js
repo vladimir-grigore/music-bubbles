@@ -6,7 +6,7 @@ const initialState = {
       shape: "circularImage",
       borderWidth: 3,
       size: 30,
-      mass: 2,
+      mass: 2.5,
       shadow:{
         enabled: true,
         color: "rgba(0,0,0,0.5)",
