@@ -14,6 +14,7 @@ You can access the project at:
 Music Bubbles is an app that utilizes the `vis.js` force graph library to display music artists, albums and tracks in a fun manner by plugging into the Spotify API. 
 
 ## Screenshots
+`![Screenshot](https://github.com/vladimir-grigore/music-bubbles/blob/main/Screenshot.png?raw=true)`
 
 ## Technologies
 `React`, `vis.js`, `Material UI`, `Redux`
