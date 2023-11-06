@@ -52,8 +52,9 @@ export function Visualizer() {
   }
 
   const events = {
-    select: function(event) {
+    click: function(event) {
       var { nodes } = event
+
       if (nodes[0] !== null && nodes[0] !== undefined) {
         if (isArtistClick(nodes[0], stateNodes)) {
           handleArtistClick(nodes[0])
