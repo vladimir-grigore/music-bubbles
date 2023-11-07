@@ -2,7 +2,7 @@
 Music Bubbles
 
 ## Demo link:
-You can access the project at:
+You can access the project at: [Demo site](https://music-bubbles-cbdf91256b7f.herokuapp.com/)
 
 ## Table of Contents:
 - [About The App](#about-the-app)
