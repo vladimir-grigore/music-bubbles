@@ -1,9 +1,6 @@
 # Project Title
 Music Bubbles
 
-## Demo link:
-You can access the project at: [Demo site](https://music-bubbles-9de417622543.herokuapp.com/)
-
 ## Table of Contents:
 - [About The App](#about-the-app)
 - [Screenshots](#screenshots)
